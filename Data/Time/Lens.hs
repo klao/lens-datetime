@@ -397,6 +397,11 @@ instance Timeable UTCTime where
   timeAsDiff f (UTCTime d t) = UTCTime d <$> f t
   {-# INLINE timeAsDiff #-}
 
+instance Timeable ZonedTime where
+  time f zonedTime@(ZonedTime {zonedTimeToLocalTime=localTime}) =
+      (\t -> zonedTime {zonedTimeToLocalTime=t}) <$> time f localTime
+  {-# INLINE time #-}
+
 instance Timeable LocalTime where
   time f (LocalTime d t) = LocalTime d <$> f t
   {-# INLINE time #-}
